@@ -21,6 +21,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import model.Progress;
 import model.User;
 import model.Workout;
 
@@ -28,6 +29,7 @@ import model.Workout;
  * VIEW: the trainer window.
  * Tab 1 -> form to assign a workout to a client.
  * Tab 2 -> the workouts this trainer assigned.
+ * Tab 3 -> progress and notes from all clients.
  */
 public class TrainerView extends JFrame {
 
@@ -40,10 +42,17 @@ public class TrainerView extends JFrame {
 
     private final JButton assignButton = new JButton("Assign Workout");
     private final JButton refreshButton = new JButton("Refresh");
+    private final JButton refreshProgressButton = new JButton("Refresh");
     private final JButton logoutButton = new JButton("Logout");
 
     private final DefaultTableModel myWorkouts =
             new DefaultTableModel(new Object[]{"Date", "Client", "Exercise", "Sets", "Reps", "Remark"}, 0) {
+                public boolean isCellEditable(int r, int c) { return false; }
+            };
+
+    private final DefaultTableModel clientProgress =
+            new DefaultTableModel(
+                    new Object[]{"Date", "Client", "Weight (kg)", "Status", "Note"}, 0) {
                 public boolean isCellEditable(int r, int c) { return false; }
             };
 
@@ -56,6 +65,7 @@ public class TrainerView extends JFrame {
         JTabbedPane tabs = new JTabbedPane();
         tabs.addTab("Assign Workout", buildAssignTab());
         tabs.addTab("My Assigned Workouts", buildListTab());
+        tabs.addTab("Client Progress & Notes", buildProgressTab());
 
         JPanel header = new JPanel(new BorderLayout());
         header.add(new JLabel("  Logged in as TRAINER: " + trainerName), BorderLayout.WEST);
@@ -99,6 +109,16 @@ public class TrainerView extends JFrame {
         return panel;
     }
 
+    private JPanel buildProgressTab() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(new JScrollPane(new JTable(clientProgress)), BorderLayout.CENTER);
+
+        JPanel south = new JPanel();
+        south.add(refreshProgressButton);
+        panel.add(south, BorderLayout.SOUTH);
+        return panel;
+    }
+
     private void addRow(JPanel form, GridBagConstraints c, int row, String label, JComponent field) {
         c.gridx = 0; c.gridy = row;
         form.add(new JLabel(label), c);
@@ -120,6 +140,15 @@ public class TrainerView extends JFrame {
             myWorkouts.addRow(new Object[]{
                     w.getWorkoutDate(), w.getClientName(), w.getExercise(),
                     w.getSets(), w.getReps(), w.getRemark()});
+        }
+    }
+
+    public void setClientProgress(List<Progress> progress) {
+        clientProgress.setRowCount(0);
+        for (Progress entry : progress) {
+            clientProgress.addRow(new Object[]{
+                    entry.getLogDate(), entry.getClientName(), entry.getWeightKg(),
+                    entry.getStatus(), entry.getNote()});
         }
     }
 
@@ -162,6 +191,10 @@ public class TrainerView extends JFrame {
 
     public void onRefresh(ActionListener listener) {
         refreshButton.addActionListener(listener);
+    }
+
+    public void onRefreshProgress(ActionListener listener) {
+        refreshProgressButton.addActionListener(listener);
     }
 
     public void onLogout(ActionListener listener) {

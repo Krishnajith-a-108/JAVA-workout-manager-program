@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 import dao.ActivityDAO;
+import dao.ProgressDAO;
 import dao.UserDAO;
 import dao.WorkoutDAO;
 import model.User;
@@ -24,6 +25,7 @@ public class TrainerController {
 
     private final UserDAO userDAO = new UserDAO();
     private final WorkoutDAO workoutDAO = new WorkoutDAO();
+    private final ProgressDAO progressDAO = new ProgressDAO();
     private final ActivityDAO activityDAO = new ActivityDAO();
 
     public TrainerController(TrainerView view, int trainerId) {
@@ -31,12 +33,14 @@ public class TrainerController {
         this.trainerId = trainerId;
         view.onAssign(e -> assignWorkout());
         view.onRefresh(e -> loadWorkouts());
+        view.onRefreshProgress(e -> loadClientProgress());
         view.onLogout(e -> logout());
     }
 
     public void start() {
         loadClients();
         loadWorkouts();
+        loadClientProgress();
         view.setVisible(true);
     }
 
@@ -58,6 +62,14 @@ public class TrainerController {
             view.setWorkouts(workoutDAO.findByTrainer(trainerId));
         } catch (SQLException ex) {
             view.showError("Cannot load the workouts.\n" + ex.getMessage());
+        }
+    }
+
+    private void loadClientProgress() {
+        try {
+            view.setClientProgress(progressDAO.findAll());
+        } catch (SQLException ex) {
+            view.showError("Cannot load client progress and notes.\n" + ex.getMessage());
         }
     }
 

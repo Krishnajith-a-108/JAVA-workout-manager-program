@@ -8,10 +8,7 @@ import dao.UserDAO;
 import view.AdminView;
 import view.LoginView;
 
-/**
- * CONTROLLER for the admin window.
- * It only reads: client progress, trainer list and trainer activities.
- */
+/
 public class AdminController {
 
     private final AdminView view;

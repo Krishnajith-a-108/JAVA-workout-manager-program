@@ -19,13 +19,15 @@ The MySQL Connector/J driver is included in `lib/`.
 
 ## Run
 
-Double-click `run.bat`, or open PowerShell in this folder and run:
+Double-click `run-hidden.vbs` to start without a terminal window. A small dialog asks for the MySQL username and password; the password is masked while typing.
+
+For troubleshooting, you can also double-click `run.bat` or open PowerShell in this folder and run:
 
 ```powershell
 .\run.bat
 ```
 
-The launcher compiles the application, then prompts for the MySQL username and password. These are the MySQL account credentials, not the gym application's sample login credentials.
+The launcher compiles the application before it starts. Enter your MySQL account credentials, not the gym application's sample login credentials.
 
 ## Sample application logins
 
@@ -46,4 +48,5 @@ These credentials are for the sample users inserted by `gym_db.sql`. Change them
 - `src/view/` — Swing windows
 - `lib/` — MySQL JDBC driver
 - `gym_db.sql` — database schema and sample data
+- `run-hidden.vbs` — launches without a terminal window
 - `run.bat` / `run.ps1` — Windows build and launch scripts

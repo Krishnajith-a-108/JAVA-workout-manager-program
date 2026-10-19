@@ -20,12 +20,7 @@ import model.Activity;
 import model.Progress;
 import model.TrainerSummary;
 
-/**
- * VIEW: the admin window (3 tables, nothing else).
- * Tab 1 -> progress of every client.
- * Tab 2 -> trainers and how many workouts they assigned.
- * Tab 3 -> trainer activities.
- */
+
 public class AdminView extends JFrame {
 
     private final DefaultTableModel progressTable =

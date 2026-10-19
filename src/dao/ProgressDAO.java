@@ -54,7 +54,7 @@ public class ProgressDAO {
         return query(BASE_SELECT + "WHERE p.client_id = ? ORDER BY p.log_date DESC", clientId);
     }
 
-    /** Progress of every client - what the admin looks at. */
+    /** Progress of every client - what the admin and trainers can view. */
     public List<Progress> findAll() throws SQLException {
         return query(BASE_SELECT + "ORDER BY p.log_date DESC", 0);
     }
