@@ -1,0 +1,14 @@
+# Compiled Java output
+/bin/
+/out/
+*.class
+sources.txt
+
+# Local IDE and operating-system files
+.DS_Store
+Thumbs.db
+
+# Local environment files and credentials
+.env
+.env.*
+!.env.example
