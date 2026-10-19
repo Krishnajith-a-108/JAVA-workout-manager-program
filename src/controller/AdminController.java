@@ -8,7 +8,6 @@ import dao.UserDAO;
 import view.AdminView;
 import view.LoginView;
 
-/
 public class AdminController {
 
     private final AdminView view;
