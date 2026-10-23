@@ -22,6 +22,7 @@ public class LoginController {
     public LoginController(LoginView view) {
         this.view = view;
         view.onLogin(e -> login());
+        view.onRegister(e -> register());
     }
 
     /** Shows the login window. */
@@ -62,6 +63,39 @@ public class LoginController {
                         + "and the database URL and port are correct.";
             }
             view.showError("Database error", message);
+        }
+    }
+
+    private void register() {
+        LoginView.RegistrationDetails details = view.promptRegistration();
+        if (details == null) {
+            return;
+        }
+
+        String fullName = details.getFullName();
+        String username = details.getUsername();
+        String password = details.getPassword();
+        String role = details.getRole();
+        if (fullName.isEmpty() || username.isEmpty() || password.isEmpty()) {
+            view.showError("Invalid registration", "Please enter your full name, username, and password.");
+            return;
+        }
+        if (fullName.length() > 100 || username.length() > 50 || password.length() > 100) {
+            view.showError("Invalid registration",
+                    "Full name must be at most 100 characters, username at most 50, "
+                            + "and password at most 100.");
+            return;
+        }
+
+        try {
+            userDAO.register(username, password, fullName, role);
+            view.setMessage("Account created. You can now log in.");
+        } catch (SQLException ex) {
+            if (ex.getErrorCode() == 1062) {
+                view.showError("Registration failed", "That username is already in use.");
+            } else {
+                view.showError("Registration failed", "Database request failed.\n" + ex.getMessage());
+            }
         }
     }
 

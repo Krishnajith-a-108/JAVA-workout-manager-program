@@ -2,6 +2,10 @@
 
 A Java Swing desktop application for managing gym clients, trainers, workouts, and client progress. MySQL stores the application data.
 
+The admin screen includes a Client Details tab with each client's profile, assigned trainer(s), workout count, and progress-entry count, alongside the existing Client Progress tab.
+
+Users can create a client or trainer account from the login window. Admins can remove selected clients or trainers from their respective tabs; each deletion requires confirmation and removes the account's associated records through the database's cascading foreign keys. Admin accounts cannot be created from the registration form.
+
 ## Requirements
 
 - Windows
